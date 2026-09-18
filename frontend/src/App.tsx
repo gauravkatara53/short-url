@@ -54,7 +54,7 @@ export const App: React.FC = () => {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {/* If user visits http://localhost:5173/:shortCode, forward to backend redirect engine */}
+        {/* If user visits https://console.novagk.dev/:shortCode, forward to backend redirect engine */}
         <Route path="/:shortCode" element={<ShortRedirectHandler />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

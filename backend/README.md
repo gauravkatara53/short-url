@@ -99,11 +99,11 @@ JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRES_IN=7d
 
 # App
-BASE_URL=http://localhost:3000
+BASE_URL=https://novagk.dev
 SHORT_CODE_LENGTH=7
 
 # CORS
-CORS_ORIGIN=http://localhost:5173
+CORS_ORIGIN=https://console.novagk.dev
 
 # Upstash Redis
 UPSTASH_REDIS_REST_URL=https://your-upstash-redis-url.upstash.io

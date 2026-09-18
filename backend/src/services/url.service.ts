@@ -4,7 +4,7 @@ import { generateShortCode } from '../utils/shortCode.js';
 import { AppError } from '../utils/AppError.js';
 import type { UrlRow, PaginationMeta, ResolvedUrl } from '../types/index.js';
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const BASE_URL = (process.env.BASE_URL || 'https://novagk.dev').replace(/\/$/, '');
 const SHORT_CODE_LENGTH = parseInt(process.env.SHORT_CODE_LENGTH || '7', 10);
 
 /** Maximum retries to resolve a short-code collision */

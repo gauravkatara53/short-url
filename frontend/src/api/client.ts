@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || '';
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+export const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://novagk.dev').replace(/\/$/, '');
+export const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? BACKEND_URL : '');
 
 export function getShortUrl(shortCode: string): string {
   if (!shortCode) return '';

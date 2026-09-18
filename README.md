@@ -113,8 +113,8 @@ npm run dev
 ```
 
 The application will be running at:
-- **Frontend Dashboard**: `http://localhost:5173`
-- **Backend API**: `http://localhost:3000`
+- **Frontend Dashboard**: `https://console.novagk.dev` (Local Dev: `http://localhost:5173`)
+- **Backend API**: `https://novagk.dev` (Local Dev: `http://localhost:3000`)
 
 ---
 
