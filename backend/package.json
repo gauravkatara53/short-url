@@ -1,0 +1,46 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "worker": "tsx watch src/workers/clickConsumer.worker.ts",
+    "worker:start": "node dist/workers/clickConsumer.worker.js",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "tsx test/phase6_verify.ts",
+    "test:phase5": "tsx test/phase5_verify.ts",
+    "test:resilience": "tsx test/phase7_resilience.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clickhouse/client": "^1.23.1",
+    "@upstash/redis": "^1.38.4",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.23.0",
+    "redis": "^6.2.1",
+    "ua-parser-js": "^2.0.10",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.20.3",
+    "@types/pg": "^8.23.1",
+    "@types/ua-parser-js": "^0.7.39",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
