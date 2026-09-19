@@ -5,13 +5,14 @@ import * as clickEventModel from '../models/clickEvent.model.js';
 import { publishClickEvent } from './kafkaProducer.service.js';
 import { clickEventSchema } from '../utils/validators.js';
 import type { ClickEvent, DeviceType } from '../types/index.js';
+import geoip from 'geoip-lite';
 
 /**
  * Extract client IP address safely from Express request.
  * Inspects standard proxy headers (x-forwarded-for, x-real-ip) and socket address.
  */
 export function extractIpAddress(req: Request): string | null {
-  const forwardedFor = req.headers['x-forwarded-for'];
+  const forwardedFor = req.headers['x-forwarded-for'] || req.headers['cf-connecting-ip'] || req.headers['true-client-ip'];
   if (forwardedFor) {
     const ips = Array.isArray(forwardedFor)
       ? forwardedFor[0]
@@ -33,6 +34,21 @@ export function extractIpAddress(req: Request): string | null {
   }
 
   return null;
+}
+
+/**
+ * Resolve country ISO code from an IP address.
+ */
+export function resolveCountry(ipAddress: string | null): string | null {
+  if (!ipAddress) return null;
+  
+  try {
+    const geo = geoip.lookup(ipAddress);
+    return geo?.country || null;
+  } catch (err) {
+    console.warn(`[GEOIP] ⚠️ Failed to resolve country for IP ${ipAddress}:`, (err as Error).message);
+    return null;
+  }
 }
 
 /**
@@ -104,12 +120,13 @@ export function buildClickEvent(
   req: Request,
 ): ClickEvent {
   const ipAddress = extractIpAddress(req);
+  const country = resolveCountry(ipAddress);
   const rawUserAgent = (req.headers['user-agent'] as string | undefined)?.trim() || null;
   const { device, browser, operatingSystem } = parseUserAgent(rawUserAgent);
   const referrer = extractReferrer(req);
 
   console.log(`[CLICK_EVENT] 🛠️ Building click event for shortCode="${shortCode}", urlId="${urlId}"`);
-  console.log(`[CLICK_EVENT] 🔍 Request details -> IP: "${ipAddress}", UA: "${rawUserAgent}", Referrer: "${referrer}"`);
+  console.log(`[CLICK_EVENT] 🔍 Request details -> IP: "${ipAddress}", Country: "${country || 'Unknown'}", UA: "${rawUserAgent}", Referrer: "${referrer}"`);
   console.log(`[CLICK_EVENT] 🔍 Parsed UA -> Device: "${device}", Browser: "${browser}", OS: "${operatingSystem}"`);
 
   const event: ClickEvent = {
@@ -123,7 +140,7 @@ export function buildClickEvent(
     browser,
     operatingSystem,
     referrer,
-    country: null, // Geolocation placeholder
+    country,
     requestId: req.id || (req.headers['x-request-id'] as string | undefined),
   };
 
